@@ -18,7 +18,7 @@
   :version "0.1-SNAPSHOT"
   :author "Eitarow Fukamachi"
   :license "LLGPL"
-  :depends-on ()
+  :depends-on (:asdf)
   :components ((:module "src"
                 :components
                 ((:file "asdf-c-test-file"))))
