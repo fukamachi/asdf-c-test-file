@@ -1,8 +1,20 @@
-# Asdf-C-Test-File - Provides ASDF component :test-file
+# asdf-c-test-file - Provides ASDF component :test-file.
 
 ## Usage
 
-## Installation
+    (defsystem foo
+      :defsystem-depends-on (:asdf-c-test-file)
+      :components
+      ((:module "src"
+        :components
+        ((:file "core")
+         (:file "util")))
+       (:test-file "test/core")
+       (:test-file "test/util")))
+
+## Description
+
+asdf-c-test-file provides `:test-file` as an ASDF component which is for a test file to run only when `asdf:test-system`.
 
 ## Author
 
