@@ -15,7 +15,7 @@
 (in-package :asdf-c-test-file-asd)
 
 (defsystem asdf-c-test-file
-  :version "0.1-SNAPSHOT"
+  :version "0.1"
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:asdf)
