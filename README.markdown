@@ -4,6 +4,7 @@
 
     (defsystem foo
       :defsystem-depends-on (:asdf-c-test-file)
+      :in-order-to ((test-op (run-test-op foo))) ;; Need for ASDF3
       :components
       ((:module "src"
         :components

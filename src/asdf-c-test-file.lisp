@@ -8,6 +8,7 @@
   (:use :cl)
   (:import-from :asdf
                 :cl-source-file
+                :module
                 :perform
                 :load-op
                 :compile-op
@@ -25,20 +26,16 @@
   )
 
 (defmethod perform ((op test-op) (c test-file))
-  (with-open-file (log-stream
-                   (merge-pathnames ".log"
-                                    (slot-value c 'asdf::absolute-pathname))
-                   :direction :output
-                   :if-does-not-exist :create
-                   :if-exists :supersede)
-    (let ((*standard-output*
-           (make-broadcast-stream *standard-output* log-stream))
-          (*error-output*
-           (make-broadcast-stream *error-output* log-stream)))
-      (perform (make-instance 'compile-op)
-               (change-class c 'cl-source-file))
-      (perform (make-instance 'load-op)
-               (change-class c 'cl-source-file)))))
+  (let ((class (class-of op)))
+    (change-class c 'asdf:cl-source-file)
+    (perform (make-instance 'compile-op) c)
+    (perform (make-instance 'load-op) c)
+    (change-class c class)))
 
-(in-package :asdf)
-(import 'asdf-c-test-file:test-file :asdf)
+(defclass run-test-op (asdf:test-op) ())
+
+#+asdf3
+(defmethod component-depends-on ((o run-test-op) (c module))
+  `((,o ,@(component-children c)) ,@(call-next-method)))
+
+(import '(test-file run-test-op) :asdf)
